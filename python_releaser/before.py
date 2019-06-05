@@ -1,6 +1,8 @@
 
 import subprocess
+
 from jinja2 import Template
+
 from python_releaser import log, stage
 
 
@@ -11,7 +13,7 @@ class BeforeStage(stage.Stage):
     def name(self):
         return 'pre-run hooks'
 
-    def run(self, ctx, dry=False):
+    def run(self):
         """"""
         log.debug('%s: running', self.name)
 
@@ -27,7 +29,7 @@ class BeforeStage(stage.Stage):
         log.debug('%s: processing %d hooks', self.name, len(hooks))
         for hook in hooks:
             tmpl = Template(hook)
-            rendered_hook = tmpl.render(**ctx)
+            rendered_hook = tmpl.render(**self.pipeline.ctx)
 
             args = rendered_hook.split()
 

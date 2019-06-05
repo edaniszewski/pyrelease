@@ -37,8 +37,8 @@ def debug(msg, *args, **kwargs):
     logger.debug('[debug] ' + msg, *args, **kwargs)
 
 
-def dry(msg, *args, **kwargs):
-    logger.info('[warn] dry-run: ' + msg, *args, **kwargs)
+def dry(name, msg, *args, **kwargs):
+    logger.info('[warn] dry-run ({}): '.format(name) + msg, *args, **kwargs)
 
 
 def write(msg, *args, **kwargs):

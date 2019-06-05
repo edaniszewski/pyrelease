@@ -1,8 +1,17 @@
 
-import subprocess
 import shutil
+import subprocess
 
 from python_releaser import log, stage
+
+# The fake git context that will be used if running with
+# --dry-run and pyreleaser cannot determine the context.
+fake_git_ctx = {
+    'long_commit': 'none',
+    'short_commit': 'none',
+    'tag': 'dry-run',
+    'url': 'none',
+}
 
 
 class GitContextStage(stage.Stage):
@@ -12,10 +21,33 @@ class GitContextStage(stage.Stage):
     def name(self):
         return 'git context'
 
-    def run(self, ctx, dry=False):
-        pass
+    def run(self):
+        if not bin_exists():
+            if self.pipeline.dry_run:
+                log.dry(self.name, 'pyreleaser requires git to be installed (https://git-scm.com/)')
+                self.pipeline.dry_summary.incr(self.name)
+                self.pipeline.ctx.update(fake_git_ctx)
+                return
 
+            log.fatal('pyreleaser requires git to be installed (https://git-scm.com/)')
 
+        if not is_repo():
+            if self.pipeline.dry_run:
+                log.dry(self.name, 'pyreleaser running outside of git repo; using fake context for run')
+                self.pipeline.dry_summary.incr(self.name)
+                self.pipeline.ctx.update(fake_git_ctx)
+                return
+
+            log.fatal('pyreleaser must be run from within a git repo')
+
+        self.pipeline.ctx.update({
+            'long_commit': long_commit(),
+            'short_commit': short_commit(),
+            'tag': tag(),
+            'url': url(),
+        })
+
+        # TODO: check that a tag exists and that it matches the package version.
 
 
 def bin_exists():

@@ -1,9 +1,9 @@
 """"""
 
-import logging
 import argparse
-import textwrap
+import logging
 import sys
+import textwrap
 
 from python_releaser import __version__, cmd, log
 
@@ -89,4 +89,3 @@ def main():
         log.fatal(f'unrecognized command "{args.command}"')
 
     log.debug('done')
-

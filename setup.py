@@ -40,8 +40,9 @@ setup(
         ],
     },
     install_requires=[
-        'bison',
         'Jinja2',
+        'pyyaml',
+        'semver',
         'twine',
         'wheel',
     ],

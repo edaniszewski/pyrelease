@@ -1,8 +1,8 @@
 """"""
 
 import os
-import yaml
 
+import yaml
 from bison import Bison, DictOption, ListOption, Option, Scheme
 
 

@@ -6,8 +6,12 @@ from python_releaser import log
 
 class Stage(metaclass=abc.ABCMeta):
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, pipeline):
+        self.pipeline = pipeline
+        # fixme: name and cfg key should probably be different
+        self.config = pipeline.cfg.get(self.name)
+
+        self.pipeline.dry_summary.init(self.name)
 
     @property
     @abc.abstractmethod
@@ -15,7 +19,7 @@ class Stage(metaclass=abc.ABCMeta):
         """Get the name of the pipeline stage."""
 
     @abc.abstractmethod
-    def run(self, ctx, dry=False):
+    def run(self):
         """Run the pipeline stage."""
 
     def skip(self, reason):

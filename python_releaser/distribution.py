@@ -1,7 +1,7 @@
 
-import subprocess
-import shutil
 import os
+import shutil
+import subprocess
 
 from python_releaser import log, stage
 
@@ -13,15 +13,30 @@ class DistributionStage(stage.Stage):
     def name(self):
         return 'distribution'
 
-    def run(self, ctx, dry=False):
+    def run(self):
         """"""
-        print('-- config ------')
-        print(self.config)
 
+        if not has_python():
+            if self.pipeline.dry_run:
+                log.dry(self.name, 'python not found')
+                self.pipeline.dry_summary.incr(self.name)
+                return
+
+            log.fatal('python is not installed')
+
+        if not has_setup_py():
+            if self.pipeline.dry_run:
+                log.dry(self.name, 'setup.py not found but required for distribution')
+                self.pipeline.dry_summary.incr(self.name)
+                return
+
+            log.fatal('project setup.py not found')
+
+        # todo: need to properly parse the config..
+        sdist()
 
 
 def has_python():
-    # todo: generalize
     return shutil.which('python') is not None
 
 
@@ -40,6 +55,4 @@ def sdist(formats=None):
 
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     # todo: check for error
-    print(result)
-    print(result.stdout)
-    print(result.stderr)
+

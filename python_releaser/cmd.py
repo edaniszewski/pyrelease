@@ -1,6 +1,8 @@
-from jinja2 import Template
 import os
-from python_releaser import templates, log, pipeline
+
+from jinja2 import Template
+
+from python_releaser import log, pipeline, templates
 
 
 def init():
