@@ -16,7 +16,7 @@ class SemVerStage(stage.Stage):
         tag = self.pipeline.ctx['tag']
 
         if tag and tag[0].lower() == 'v':
-            log.debug('tag begins with "v"; stripping prefix')
+            log.debug('tag begins with "v"; stripping prefix', l=1)
             tag = tag[1:]
 
         try:
@@ -24,7 +24,7 @@ class SemVerStage(stage.Stage):
         except ValueError as e:
             if self.pipeline.dry_run:
                 self.pipeline.dry_summary.incr(self.name)
-                log.dry(self.name, 'tag "%s" is not a valid SemVer string', self.pipeline.ctx['tag'])
+                log.dry(self.name, 'tag "{}" is not a valid SemVer string'.format(self.pipeline.ctx['tag']), l=1)
                 self.pipeline.ctx['version'] = {
                     'major': 0,
                     'minor': 0,
@@ -36,7 +36,7 @@ class SemVerStage(stage.Stage):
                 return
 
             else:
-                log.fatal(e)
+                log.fatal(e, l=1)
 
         self.pipeline.ctx['version'] = {
             'major': version.major,

@@ -19,7 +19,7 @@ def init():
 
 
 def release(ctx):
-    log.debug('release context: %s', ctx)
+    log.debug('release context: {}'.format(ctx))
 
     release_pipeline = pipeline.Pipeline(
         config_file=ctx.get('config'),

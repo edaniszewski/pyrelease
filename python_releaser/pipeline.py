@@ -1,7 +1,7 @@
 
 from python_releaser import (before, changelog, checksum, config, distribution,
                              docker, env, git, log, publish, release, semver,
-                             setup)
+                             setup, __version__)
 
 
 class DryRunSummary:
@@ -53,8 +53,15 @@ class Pipeline:
             release.ReleaseStage(self),
         ]
 
+        log.write('pyreleaser')
+        log.write('  version:\t{}'.format(__version__))
+        log.write('  project:\t{}'.format(self.ctx['project']))
+        log.write('  config file:\t{}'.format(self.config_file))
+
     def run(self):
+        log.write('starting release pipeline')
         for stage in self.stages:
+            log.write('→ {}'.format(stage.name.upper()))
             stage.run()
 
         if self.dry_run:

@@ -18,19 +18,19 @@ class DistributionStage(stage.Stage):
 
         if not has_python():
             if self.pipeline.dry_run:
-                log.dry(self.name, 'python not found')
+                log.dry(self.name, 'python not found', l=1)
                 self.pipeline.dry_summary.incr(self.name)
                 return
 
-            log.fatal('python is not installed')
+            log.fatal('python is not installed', l=1)
 
         if not has_setup_py():
             if self.pipeline.dry_run:
-                log.dry(self.name, 'setup.py not found but required for distribution')
+                log.dry(self.name, 'setup.py not found but required for distribution', l=1)
                 self.pipeline.dry_summary.incr(self.name)
                 return
 
-            log.fatal('project setup.py not found')
+            log.fatal('project setup.py not found', l=1)
 
         # todo: need to properly parse the config..
         sdist()
@@ -51,7 +51,7 @@ def sdist(formats=None):
         ]
 
     cmd = ['python', 'setup.py', 'sdist', '--formats={}'.format(','.join(formats))]
-    log.debug('running command: "%s"', ' '.join(cmd))
+    log.debug('running command: "{}"'.format(' '.join(cmd)), l=1)
 
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     # todo: check for error

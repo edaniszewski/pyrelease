@@ -3,7 +3,7 @@
 import os
 
 import yaml
-from bison import Bison, DictOption, ListOption, Option, Scheme
+# from bison import Bison, DictOption, ListOption, Option, Scheme
 
 
 def load(config_file):

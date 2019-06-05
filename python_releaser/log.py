@@ -28,23 +28,30 @@ logging.config.dictConfig(dict(
 logger = logging.getLogger(__name__)
 
 
-def fatal(msg, *args, **kwargs):
-    logger.fatal('error: ' + msg, *args, **kwargs)
+def get_pad(level):
+    pad = ''
+    if level > 0:
+        pad = ('  ' * level) + '└─ '
+    return pad
+
+
+def fatal(msg, l=0):
+    logger.fatal(get_pad(l) + 'error: ' + msg)
     sys.exit(1)
 
 
-def debug(msg, *args, **kwargs):
-    logger.debug('[debug] ' + msg, *args, **kwargs)
+def debug(msg, l=0):
+    logger.debug(get_pad(l) + '[debug] ' + msg)
 
 
-def dry(name, msg, *args, **kwargs):
-    logger.info('[warn] dry-run ({}): '.format(name) + msg, *args, **kwargs)
+def dry(name, msg, l=0):
+    logger.info(get_pad(l) + '[warn] dry-run ({}): '.format(name) + msg)
 
 
-def write(msg, *args, **kwargs):
-    logger.info(msg, *args, **kwargs)
+def write(msg, l=0):
+    logger.info(get_pad(l) + msg)
 
 
-def write_and_exit(msg, *args, **kwargs):
-    logger.info(msg, *args, **kwargs)
+def write_and_exit(msg, l=0):
+    logger.info(get_pad(l) + msg)
     sys.exit(0)

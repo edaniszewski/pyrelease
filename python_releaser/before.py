@@ -15,7 +15,7 @@ class BeforeStage(stage.Stage):
 
     def run(self):
         """"""
-        log.debug('%s: running', self.name)
+        log.debug('{}: running'.format(self.name), l=1)
 
         if not self.config:
             return self.skip('no configuration found')
@@ -26,7 +26,7 @@ class BeforeStage(stage.Stage):
             #   if there are other things we'd want to do.
             return self.skip('no pre-run hooks defined')
 
-        log.debug('%s: processing %d hooks', self.name, len(hooks))
+        log.debug('{}: processing {} hooks'.format(self.name, len(hooks)), l=1)
         for hook in hooks:
             tmpl = Template(hook)
             rendered_hook = tmpl.render(**self.pipeline.ctx)
@@ -37,6 +37,6 @@ class BeforeStage(stage.Stage):
             # todo: trap error, write success output / error output to log somewhere
 
             if result.stderr:
-                log.fatal('before hook failed: "%s"', hook)
+                log.fatal('before hook failed: "{}"'.format(hook), l=1)
 
-        log.debug('%s: complete', self.name)
+        log.debug('{}: complete'.format(self.name), l=1)

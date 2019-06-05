@@ -25,4 +25,4 @@ class Stage(metaclass=abc.ABCMeta):
     def skip(self, reason):
         # fixme: should each stage print a header or something so the
         #   output is more organized?
-        log.write('skipping {}: {}'.format(self.name, reason))
+        log.write('skipping {}: {}'.format(self.name, reason), l=1)
